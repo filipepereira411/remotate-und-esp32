@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlo Remoto do ESP32</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            padding: 50px 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .btn {
+            display: block;
+            width: 85%;
+            margin: 10px auto;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-on { background-color: #4CAF50; }
+        .btn-on:hover { background-color: #45a049; }
+        .btn-off { background-color: #f44336; }
+        .btn-off:hover { background-color: #da190b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Painel de Comando</h1>
+    <p>Rede Alvo: <strong>MPENEDOS</strong></p>
+    
+    <!-- Campo para digitares o IP que o ESP32 recebeu -->
+    <label for="ip">Insere o IP do teu ESP32:</label><br>
+    <input type="text" id="ipAddress" value="192.168.1.100" placeholder="Ex: 192.168.1.15">
+
+    <!-- Botões que usam JavaScript para enviar o comando sem sair da página -->
+    <button class="btn btn-on" onclick="enviarComando('H')">LIGAR LED</button>
+    <button class="btn btn-off" onclick="enviarComando('L')">DESLIGAR LED</button>
+</div>
+
+<script>
+    function enviarComando(estado) {
+        // Vai buscar o IP que escreveste no campo de texto
+        var ip = document.getElementById("ipAddress").value;
+        
+        // Monta o endereço correto (ex: http://192.168.1)
+        var url = "http://" + ip + "/" + estado;
+        
+        // Abre o link invisivelmente em segundo plano para comandar a placa
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.send();
+        
+        console.log("Comando enviado para: " + url);
+    }
+</script>
+
+</body>
+</html>
